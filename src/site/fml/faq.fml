@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faqs title="Frequently Asked Questions" toplink="false">
+
+	<part id="why-excha">
+
+    <title>Why should I use EXHCA?</title>
+
+    <faq id="why-excha">
+      <question>
+       What is the purpose of EXCHA and why should I use it?
+      </question>
+      <answer>
+        <p>According to several researches a huge part of modern applications deal 
+        with exception handling and logging.</p> 
+        <p>There are many common tasks in exception handling and logging unfortunately
+        java programming language does not provide efficient means to reuse exception handling logic.
+        Advanced developers solve these problems with the help of Aspect Oriented Programming.</p> 
+        <p>EXCHA is an AOP based framework that gives you an elegant way to handle exceptions and
+      	it was designed to help developers to solve the following problems:</p> 
+			<ul>
+				<li>log thrown exception</li>
+				<li>substitute thrown exception with the other exception</li>
+				<li>swallow thrown exception</li>
+				<li>reinvoke method in case exception was thrown</li>
+				<li>reuse exception handling logic</li>
+			</ul>
+      </answer>
+    </faq>
+
+  </part>
+	
+
+  <part id="environment">
+    <title>Environment</title>
+    <faq id="without-spring">
+      <question>
+        Is it possible to use EXCHA without Spring Framework?
+      </question>
+      <answer>
+        <p>In this case you have to use AspectJ compiler.</p>
+      </answer>
+    </faq>
+
+    <faq id="without-aspectj">
+      <question> 
+         Is it possible to use EXCHA without AspectJ?  
+      </question>
+      <answer>
+        <p>In this case you can use EXCHA to handle exception of Spring beans.</p>
+      </answer>
+    </faq>
+    
+    <faq id="without-aspectj">
+      <question> 
+         What are jre requirements?
+      </question>
+      <answer>
+        <p>jre 1.5 and above</p>
+      </answer>
+    </faq>
+    
+  </part>
+  
+  <part id="implementation">
+    <title>implementation</title>
+    <faq id="why-own-log-level-enum">
+      <question>
+        Why does echa uses own LogLevel enum?
+      </question>
+      <answer>
+        <p>Unfortunately Apache Common Logging does not present such enum while LSF4J presents only restricted subset.</p>
+      </answer>
+    </faq>
+  </part>    
+ 
+  
+  
+</faqs>

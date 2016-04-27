@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	This file is part of the Exception Handling Commons project.
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public License
+	as published by the Free Software Foundation; version 2.1
+	of the License.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	GNU Lesser General Public License for more details.
+	You should have received a copy of the GNU Lesser General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+	
+	Copyright 2007-2008 Vitaliy Semochkin aka Yilativs
+-->
+<project>
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-stylus-skin</artifactId>
+		<version>1.0</version>
+	</skin>
+
+	<bannerLeft>
+		<name>EXCHA</name>
+		<src>/images/excha-banner.png</src>
+		<href>http://excha.sourceforge.net</href>
+	</bannerLeft>
+	<bannerRight>
+		<name>AspecJ</name>
+		<src>http://www.eclipse.org/aspectj/aspectjbanner.png</src>
+		<href>http://www.eclipse.org/aspectj/</href>
+	</bannerRight>
+
+	<poweredBy>
+		<logo name="SourceForge" href="http://sourceforge.net/projects/excha" img="http://sourceforge.net/sflogo.php?group_id=212942type=5" />
+		<logo name="Maven" href="http://maven.apache.org/" img="http://maven.apache.org/images/logos/maven-feather.png" />
+		<logo name="SpringFramework" href="http://www.springframework.org" img="http://static.springframework.org/buttons/springSource.png" />
+	</poweredBy>
+	<body>
+
+		<menu name="EXCHA">
+			<item name="Usage" href="/usage.html" />
+			<item name="FAQ" href="/faq.html" />
+			<item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=212942" />
+		</menu>
+		<menu ref="reports" />
+	</body>
+</project>

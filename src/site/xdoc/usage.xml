@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>EXCHA Programming Guide</title>
+	</properties>
+
+	<body>
+
+		<section name="Introduction">
+			<p>EXCHA is an AOP based framework that gives you an elegant way to handle exceptions.</p>
+			<p>With EXCHA by placing annotation over the class or method you can:</p>
+			<UL>
+				<LI>log thrown exception</LI>
+				<LI>substitute thrown exception with the other exception</LI>
+				<LI>swallow thrown exception</LI>
+				<LI>reinvoke method in case exception was thrown</LI>
+				<LI>reuse exception handling logic</LI>
+			</UL>
+		</section>
+		<section name="Example">
+			With EXHCA the following class:
+			<source><![CDATA[class SillyFoo {
+	
+	private static final Log LOG = LogFactory.getLog(SillyFoo.class);
+
+	public void method1(String arg1) {
+		try {
+			callToMethodThatThrowsException1();
+		} catch (SomeRuntimeException1 e) {
+			LOG.error("method11 with argument " + arg1 + " caused exception", e);
+			throw new BusinessRuntimeException();
+		} catch (SomeRuntimeException2 e) {
+			LOG.error("method11 with argument " + arg1 + " caused exception", e);
+			throw new BusinessRuntimeException();
+		} catch (RuntimeException e) {
+			LOG.error("method11 with argument " + arg1 + " caused exception", e);
+			throw new SystemApplicationRuntimeException(e);
+		}
+	}
+
+	public void method2(String arg1, String arg2) {
+		try {
+			callToMethodThatThrowsException2();
+		} catch (SomeRuntimeException1 e) {
+			LOG.error("method2 with arguments " + arg1 + ", " + arg2 + " caused exception", e);
+			throw new BusinessRuntimeException();
+		} catch (SomeRuntimeException2 e) {
+			LOG.error("method2 with arguments " + arg1 + ", " + arg2 + " caused exception", e);
+			throw new BusinessRuntimeException();
+		} catch (RuntimeException e) {
+			LOG.error("method2 with arguments " + arg1 + ", " + arg2 + " caused exception", e);
+			throw new SystemApplicationRuntimeException(e);
+		}
+	}
+
+	private static final long millisToWaitBeforeRetry = 10 * 1000;
+	
+	private static final int MAX_RETRIES = 5;
+	
+	public void callBuggyService(String arg1, String arg2) {
+		for (int i = 0; i < MAX_RETRIES; i++) {
+			try {
+				callToMethodThatThrowsTimeoutException();
+			} catch (TimeoutException e) {
+				LOG.error("callBuggyService with arguments " + arg1 + ", " + arg2 + " caused exception", e);
+				try {
+					Thread.sleep(millisToWaitBeforeRetry);
+				} catch (InterruptedException ie) {
+					LOG.error("callBuggyService with arguments " + arg1 + ", " + arg2 + " caused exception and was interrupted during pause befor second try", e);
+				}
+				throw new SystemApplicationRuntimeException(e);
+			} catch (RuntimeException e) {
+				LOG.error("method2 with arguments " + arg1 + ", " + arg2 + " caused exception", e);
+				throw new SystemApplicationRuntimeException(e);
+			}
+		}
+	}
+}]]></source>
+			can be turned into:
+			<source><![CDATA[@HandleThrown(
+substitute = {TimeoutException.class, SomeRuntimeException1.class, SomeRuntimeException2.class, RuntimeException.class }, 
+substituteBy = { SystemApplicationRuntimeException.class, BusinessRuntimeException.class, BusinessRuntimeException.class, SystemApplicationRuntimeException.class }, 
+wrapCause = { false, false, false, true }, 
+logLevel = LogLevel.ERROR, logVerbosity = {LogVerbosity.ARGUMENTS, LogVerbosity.STACK_TRACE },
+retriesBeforeProcessing = 5, delayBeforeRetry = 10 * 1000)
+class SmartFoo {
+	public void method1(String arg1) {
+		callToMethodThatThrowsException1();
+	}
+
+	public void method2(String arg1, String arg2) {
+		callToMethodThatThrowsException2();
+	}
+
+	public void callBuggyService(String arg1, String arg2) {
+		callToMethodThatThrowsTimeoutException();
+	}
+}]]></source>
+
+			Notice that all exception handling logic was defined with
+			annotation HandleThrown. That made the SmartFoo much smaller, cleaner and robust.
+
+			Explanation:
+			<UL>
+				<LI>
+					<code>substitute</code>
+					property defines exception that should be
+					substituted by corresponding exception defined at
+				</LI>
+
+				<LI>
+					<code>substituteBy</code>
+					property. In given example TimeoutException will be
+					substituted by SystemApplicationRuntimeException.
+				</LI>
+
+				<LI>
+					<code>wrapCause</code>
+					property defines what exceptions should wrap thrown
+					exception. In given example TimeoutException will
+					not wrap SystemApplicationRuntimeException.
+				</LI>
+
+				<LI>
+					<code>logLevel</code>
+					specifies the Log level to be used with
+					ApacheCommonsLogging In given example logLevel is
+					ERROR
+				</LI>
+
+				<LI>
+					<code>logVerbosity</code>
+					specifies what information will placed into log
+					message. In given example arguments passed to method
+					and stack trace will be logged.
+				</LI>
+
+
+				<LI>
+					<code>retriesBeforeProcessing</code>
+					specifies how many times should the method be called
+					before throwing given exception. This can be useful
+					when you are working with unstable services. In
+					given example TimeoutException will be substituted
+					with SystemApplicationRuntimeException after 5
+					tries.
+				</LI>
+
+
+				<LI>
+					<code>delayBeforeRetry</code>
+					specifies delay before retry for corresponding
+					exception. In given example the delay for
+					TimeoutException will be 10 seconds.
+				</LI>
+
+			</UL>
+		</section>
+
+		<section name="Environment Setup">
+			<p>To run EXCHA you need to use either 
+			<a href="http://static.springframework.org/spring/docs/2.5.x/reference/aop.html">Spring AOP</a> 
+			or use <a href="http://www.eclipse.org/aspectj/">AspectJ</a>compiler in your project.</p>
+			
+			<p>To run EXCHA on Spring AOP environment you need to register HandleThrowingApsect as Spring Bean
+			and enable aop:aspectj-autoproxy in your context.</p><source><![CDATA[
+			<aop:aspectj-autoproxy />
+			<bean id="handleThrownAspect" class="net.sf.excha.aspect.HandleThrownAspect" />]]>
+			</source>
+		</section>
+		
+		<section name="Further Reading">
+			It is not necessary but recommended to read this manual
+			<a href="http://static.springframework.org/spring/docs/2.5.x/reference/aop.html">Spring AOP</a>
+		</section>
+		
+	</body>
+</document>

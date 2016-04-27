@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Changes</title>
+		<author email="vitaliy.se@gmail.com">Vitaliy Semochkin</author>
+	</properties>
+	<body>
+		<release version="1.0.1" date="2008-01-19" description="release">
+			<action dev="yilativs" type="add">separated logging of exception</action>
+		</release>
+		<release version="1.0.2" date="2008-07-24" description="release">
+			<action dev="yilativs" type="add">package name changed to net.sf.excha in order to add project to maven repo1</action>
+			<action dev="yilativs" type="add">documentation added</action>
+			<action dev="yilativs" type="add">code coverage reached 99%</action>
+		</release>
+	</body>
+</document>
