@@ -38,20 +38,7 @@
 		<url>http://excha.svn.sourceforge.net/viewvc/excha/trunk</url>
 	</scm>
 
-	<distributionManagement>
-		<site>
-			<id>sourceforge.net</id>
-			<url>scp://shell.sourceforge.net/home/groups/e/ex/excha/htdocs</url>
-		</site>
-		<repository>
-			<id>sourceforge.net</id>
-			<url>scp://shell.sourceforge.net/home/groups/e/ex/excha/htdocs/repository</url>
-		</repository>
-		<snapshotRepository>
-			<id>sourceforge.net</id>
-			<url>scp://shell.sourceforge.net/home/groups/e/ex/excha/htdocs/snapshot-repository</url>
-		</snapshotRepository>
-	</distributionManagement>
+
 
 	<properties>
 		<spring.version>4.2.5.RELEASE</spring.version>
@@ -122,7 +109,7 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
-			<scope>test</scope>
+			<!--<scope>test</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>asm</groupId>
@@ -214,5 +201,44 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<profiles>
+		<profile>
+			<id>regular</id>
+			<distributionManagement>
+				<site>
+					<id>sourceforge.net</id>
+					<url>scp://shell.sourceforge.net/home/groups/e/ex/excha/htdocs</url>
+				</site>
+				<repository>
+					<id>sourceforge.net</id>
+					<url>scp://shell.sourceforge.net/home/groups/e/ex/excha/htdocs/repository</url>
+				</repository>
+				<snapshotRepository>
+					<id>sourceforge.net</id>
+					<url>scp://shell.sourceforge.net/home/groups/e/ex/excha/htdocs/snapshot-repository</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+
+		<profile>
+			<id>atol</id>
+			<distributionManagement>
+				<!--<site>
+					<id>sourceforge.net</id>
+					<url>scp://shell.sourceforge.net/home/groups/e/ex/excha/htdocs</url>
+				</site>-->
+				<repository>
+					<id>nexus-releases</id>
+					<url>http://ubnt-sm.atol.ru:8081/nexus/content/repositories/releases</url>
+				</repository>
+				<snapshotRepository>
+					<id>nexus-snapshots</id>
+					<url>http://ubnt-sm.atol.ru:8081/nexus/content/repositories/snapshots</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+
+	</profiles>
 </project>
 

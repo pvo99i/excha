@@ -68,7 +68,7 @@ public abstract class ExceptionHandlingUtils {
 		} catch (Throwable e) {
 			ExceptionHandlingUtils.logException(pjp.getClass(), e, pjp.getArgs(), ht.logVerbosity(), ht.logLevel());
 			for (Class<? extends ExceptionHandler> exeptionHandlerClass : ht.exceptionHandlers()) {
-				ExceptionHandler exceptionHandler =(ExceptionHandler) exeptionHandlerClass.newInstance();
+				ExceptionHandler exceptionHandler = exeptionHandlerClass.newInstance();
 				if (exceptionHandler.handle(pjp, e)){
 					return exceptionHandler.result();
 				}
@@ -83,15 +83,6 @@ public abstract class ExceptionHandlingUtils {
 			throw e;
 		}
 	}
-
-//	private static void runHandlers(ProceedingJoinPoint pjp, Class<? extends ExceptionHandler>[] exceptionHandlers, Throwable e) throws InstantiationException, IllegalAccessException, Throwable {
-//		for (Class<? extends ExceptionHandler> exeptionHandlerClass : exceptionHandlers) {
-//			ExceptionHandler exceptionHandler =(((ExceptionHandler) exeptionHandlerClass.newInstance());
-//			if (exceptionHandler.handle(pjp, e)){
-//				return exceptionHandler.result();
-//			}
-//		}
-//	}
 
 	private static Object substituteImpl(ProceedingJoinPoint pjp, Throwable e, HandleThrown ht) throws Throwable {
 		int substituteExceptionIndex = getSubstituteExceptionIndex(e.getClass(), ht);

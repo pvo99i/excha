@@ -15,13 +15,13 @@
 */
 package net.sf.excha.foo;
 
-import static net.sf.excha.LogVerbosity.ARGUMENTS;
-import static net.sf.excha.LogVerbosity.MESSAGE;
+import net.sf.excha.HandleThrown;
 
 import java.io.IOException;
 import java.net.SocketException;
 
-import net.sf.excha.HandleThrown;
+import static net.sf.excha.LogVerbosity.ARGUMENTS;
+import static net.sf.excha.LogVerbosity.MESSAGE;
 
 @HandleThrown(
 		substitute={IOException.class,RuntimeException.class}, 
@@ -30,7 +30,7 @@ import net.sf.excha.HandleThrown;
 		exactMatch={true,true},
 		logVerbosity ={MESSAGE,ARGUMENTS} 
 )
-public class AnnotatedFooImpl implements AnnotatedFoo{
+public class AnnotatedFooImpl implements AnnotatedFoo {
 
 	public void notAnnotated() throws Exception {
 		throw new IOException();

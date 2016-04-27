@@ -41,11 +41,11 @@ public interface ExceptionHandler {
 	 * @return true in case the Exception was handled and no 
 	 * @throws Throwable
 	 */
-	public boolean handle(ProceedingJoinPoint pjp, Throwable e) throws Throwable;
+	boolean handle(ProceedingJoinPoint pjp, Throwable e) throws Throwable;
 	
 	/**
 	 * 
 	 * @return result of method call in case you decided to suppress exception
 	 */
-	public Object result();
+	Object result();
 }
